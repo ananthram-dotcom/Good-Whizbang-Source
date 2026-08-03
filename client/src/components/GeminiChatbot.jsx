@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Bot, X, Send, Sparkles, RefreshCw, User, MessageSquare } from 'lucide-react';
+import { Bot, X, Send, Sparkles, RefreshCw, User, Volume2, CheckCircle2 } from 'lucide-react';
 
 export default function GeminiChatbot({ isOpen, setIsOpen }) {
   const [messages, setMessages] = useState([
@@ -11,6 +11,7 @@ export default function GeminiChatbot({ isOpen, setIsOpen }) {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [speakingMsgId, setSpeakingMsgId] = useState(null);
   const messagesEndRef = useRef(null);
 
   const quickQuestions = [
@@ -29,6 +30,24 @@ export default function GeminiChatbot({ isOpen, setIsOpen }) {
       scrollToBottom();
     }
   }, [messages, isOpen]);
+
+  const speakText = (msgId, text) => {
+    if ('speechSynthesis' in window) {
+      if (speakingMsgId === msgId) {
+        window.speechSynthesis.cancel();
+        setSpeakingMsgId(null);
+      } else {
+        window.speechSynthesis.cancel();
+        // Clean markdown bold stars from spoken text
+        const cleanText = text.replace(/\*\*/g, '').replace(/•/g, '');
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        utterance.rate = 0.9;
+        utterance.onend = () => setSpeakingMsgId(null);
+        window.speechSynthesis.speak(utterance);
+        setSpeakingMsgId(msgId);
+      }
+    }
+  };
 
   const handleSendMessage = async (textToSend) => {
     const query = textToSend || input;
@@ -98,23 +117,26 @@ export default function GeminiChatbot({ isOpen, setIsOpen }) {
         {/* Chat Header */}
         <div className="p-5 bg-whizbang-dark border-b border-whizbang-lightgrey flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-whizbang-cyan to-teal-500 flex items-center justify-center text-whizbang-dark font-bold shadow-md">
-              <Bot className="w-7 h-7" />
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-whizbang-cyan to-teal-400 flex items-center justify-center text-whizbang-dark font-black shadow-md">
+              <Bot className="w-6 h-6" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="font-extrabold text-xl text-white">Whizbang Assistant</h3>
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-500/40">
-                  <Sparkles className="w-3 h-3" /> Gemini AI
+                  <Sparkles className="w-3 h-3" /> Reactive AI
                 </span>
               </div>
-              <p className="text-sm text-gray-300">Patient Senior Accessibility Guide</p>
+              <p className="text-xs text-gray-300">Patient Senior Accessibility Concierge</p>
             </div>
           </div>
 
           <button
-            onClick={() => setIsOpen(false)}
-            className="p-2 text-gray-300 hover:text-white bg-whizbang-slate hover:bg-whizbang-lightgrey rounded-lg min-h-[48px] min-w-[48px] flex items-center justify-center"
+            onClick={() => {
+              if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+              setIsOpen(false);
+            }}
+            className="p-2 text-gray-300 hover:text-white bg-whizbang-dark hover:bg-whizbang-lightgrey rounded-xl border border-whizbang-lightgrey min-h-[44px] min-w-[44px] flex items-center justify-center"
             aria-label="Close Whizbang Assistant Chat"
           >
             <X className="w-6 h-6" />
@@ -126,16 +148,16 @@ export default function GeminiChatbot({ isOpen, setIsOpen }) {
           {messages.map((msg) => (
             <div
               key={msg.id}
-              className={`flex gap-3 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+              className={`flex gap-2.5 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               {msg.sender === 'bot' && (
-                <div className="w-10 h-10 rounded-lg bg-whizbang-cyan text-whizbang-dark flex items-center justify-center font-bold flex-shrink-0 mt-1">
-                  <Bot className="w-6 h-6" />
+                <div className="w-9 h-9 rounded-xl bg-whizbang-cyan text-whizbang-dark flex items-center justify-center font-bold flex-shrink-0 mt-1">
+                  <Bot className="w-5 h-5" />
                 </div>
               )}
 
               <div
-                className={`max-w-[85%] p-4 rounded-2xl text-lg leading-relaxed ${
+                className={`max-w-[85%] p-4 rounded-2xl text-base sm:text-lg leading-relaxed relative group ${
                   msg.sender === 'user'
                     ? 'bg-whizbang-orange text-white rounded-tr-none font-semibold shadow-md'
                     : 'bg-whizbang-dark text-gray-100 border border-whizbang-lightgrey rounded-tl-none'
@@ -144,20 +166,36 @@ export default function GeminiChatbot({ isOpen, setIsOpen }) {
                 <div className="whitespace-pre-line">
                   {msg.text}
                 </div>
+
+                {/* Speak Bot Response Aloud Button */}
+                {msg.sender === 'bot' && (
+                  <button
+                    onClick={() => speakText(msg.id, msg.text)}
+                    className={`mt-2 inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
+                      speakingMsgId === msg.id
+                        ? 'bg-teal-500 text-white animate-pulse'
+                        : 'bg-whizbang-slate hover:bg-whizbang-lightgrey text-whizbang-cyan border border-whizbang-cyan/30'
+                    }`}
+                    title="Read answer aloud"
+                  >
+                    <Volume2 className="w-3.5 h-3.5" />
+                    <span>{speakingMsgId === msg.id ? 'Stop Speaking' : 'Read Aloud 🔊'}</span>
+                  </button>
+                )}
               </div>
 
               {msg.sender === 'user' && (
-                <div className="w-10 h-10 rounded-lg bg-whizbang-orange text-white flex items-center justify-center font-bold flex-shrink-0 mt-1">
-                  <User className="w-6 h-6" />
+                <div className="w-9 h-9 rounded-xl bg-whizbang-orange text-white flex items-center justify-center font-bold flex-shrink-0 mt-1">
+                  <User className="w-5 h-5" />
                 </div>
               )}
             </div>
           ))}
 
           {loading && (
-            <div className="flex items-center gap-3 text-whizbang-cyan font-bold p-3 bg-whizbang-dark/60 rounded-xl border border-whizbang-lightgrey/50">
+            <div className="flex items-center gap-3 text-whizbang-cyan font-bold p-3.5 bg-whizbang-dark/80 rounded-2xl border border-whizbang-cyan/40 animate-pulse">
               <RefreshCw className="w-5 h-5 animate-spin" />
-              <span>Whizbang Assistant is typing a thoughtful answer...</span>
+              <span>Whizbang Assistant is generating a response...</span>
             </div>
           )}
 
@@ -165,14 +203,14 @@ export default function GeminiChatbot({ isOpen, setIsOpen }) {
         </div>
 
         {/* Quick Suggestion Chips */}
-        <div className="px-5 py-3 bg-whizbang-dark/80 border-t border-whizbang-lightgrey/40">
-          <p className="text-xs text-gray-400 font-bold uppercase tracking-wider mb-2">Suggested Senior Questions:</p>
+        <div className="px-5 py-3 bg-whizbang-dark/90 border-t border-whizbang-lightgrey/40">
+          <p className="text-xs text-gray-400 font-bold uppercase tracking-wider mb-2">Tap Suggested Senior Question:</p>
           <div className="flex flex-wrap gap-2">
             {quickQuestions.map((q, idx) => (
               <button
                 key={idx}
                 onClick={() => handleSendMessage(q)}
-                className="text-sm bg-whizbang-slate hover:bg-whizbang-lightgrey text-whizbang-cyan hover:text-white border border-whizbang-cyan/30 px-3 py-1.5 rounded-lg transition-colors font-medium text-left"
+                className="text-xs bg-whizbang-slate hover:bg-whizbang-lightgrey text-whizbang-cyan hover:text-white border border-whizbang-cyan/30 px-3 py-1.5 rounded-xl transition-colors font-medium text-left"
               >
                 {q}
               </button>
@@ -194,7 +232,7 @@ export default function GeminiChatbot({ isOpen, setIsOpen }) {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask Whizbang Assistant anything..."
-              className="flex-1 bg-whizbang-slate border-2 border-whizbang-lightgrey focus:border-whizbang-cyan text-white px-4 py-3 rounded-xl focus:outline-none text-lg min-h-[48px]"
+              className="flex-1 bg-whizbang-slate border-2 border-whizbang-lightgrey focus:border-whizbang-cyan text-white px-4 py-3 rounded-xl focus:outline-none text-base sm:text-lg min-h-[48px]"
               aria-label="Message to Whizbang AI Assistant"
             />
             <button
@@ -203,7 +241,7 @@ export default function GeminiChatbot({ isOpen, setIsOpen }) {
               className="bg-whizbang-orange hover:bg-orange-600 text-white font-extrabold p-3 rounded-xl min-h-[48px] min-w-[48px] flex items-center justify-center transition-all disabled:opacity-40"
               aria-label="Send Message"
             >
-              <Send className="w-6 h-6" />
+              <Send className="w-5 h-5" />
             </button>
           </form>
         </div>

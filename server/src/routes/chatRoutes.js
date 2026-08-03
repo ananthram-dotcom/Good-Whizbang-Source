@@ -26,7 +26,7 @@ Always maintain a helpful posture, emphasize senior safety and independence, and
 
 /**
  * @route   POST /api/chat
- * @desc    Proxy route for Gemini AI assistant (Whizbang Assistant)
+ * @desc    Proxy route for live Gemini AI chatbot assistant
  * @access  Public
  */
 router.post('/', async (req, res) => {
@@ -42,48 +42,47 @@ router.post('/', async (req, res) => {
 
     const apiKey = process.env.GEMINI_API_KEY;
 
-    // Check if valid API key is present
-    if (!apiKey || apiKey.trim() === '' || apiKey === 'your_free_gemini_api_key_here') {
-      const lowerMsg = message.toLowerCase();
-      let fallbackReply = `Hello! I am **Whizbang Assistant**, your patient guide to Good Whizbang smart offices!\n\n`;
-
-      if (lowerMsg.includes('price') || lowerMsg.includes('cost') || lowerMsg.includes('model')) {
-        fallbackReply += `Our pre-construction smart office models range from **$89,000** for **The Lumina Accessible WorkPod** (380 sq.ft) up to **$239,000** for **The Haven Universal Hybrid Suite** (1,100 sq.ft).\n\nEvery model includes zero-barrier doors, voice-activated climate control, and fall-prevention night lighting!`;
-      } else if (lowerMsg.includes('senior') || lowerMsg.includes('accessib')) {
-        fallbackReply += `Good Whizbang offices are built specifically for senior independence!\n\nKey safety & comfort features include:\n• **Zero-Threshold Entryways** with no tripping hazards\n• **Voice-Controlled Lighting & Shades**\n• **Anti-Glare Auto-Tinting Windows**\n• **One-Touch Emergency Assistance Buttons**`;
-      } else {
-        fallbackReply += `I can help you explore our pre-construction models, smart home automation, and accessibility features.\n\n*Note: To unlock live conversational Gemini AI capabilities, please add your free GEMINI_API_KEY to server/.env.*`;
-      }
-
+    if (!apiKey || apiKey.trim() === '') {
       return res.json({
         success: true,
-        reply: fallbackReply,
-        mode: 'fallback-demo'
+        reply: "Hello! I am Whizbang Assistant. Please ensure your GEMINI_API_KEY is configured in server/.env to unlock live conversational AI.",
+        mode: 'mock'
       });
     }
 
-    // Initialize Gemini AI Client
+    // Initialize Google Gemini AI client with user API key
     const genAI = new GoogleGenerativeAI(apiKey);
-    
-    // Use gemini-1.5-flash for fast, free-tier responses
-    const model = genAI.getGenerativeModel({
-      model: 'gemini-1.5-flash',
-      systemInstruction: WHIZBANG_SYSTEM_INSTRUCTION
-    });
 
-    // Format chat history for Gemini SDK
-    const formattedHistory = conversationHistory.map(msg => ({
-      role: msg.sender === 'user' ? 'user' : 'model',
-      parts: [{ text: msg.text }]
-    }));
+    // Try primary models: gemini-1.5-flash or gemini-2.0-flash with fallback
+    let responseText = '';
 
-    // Start Chat Session
-    const chat = model.startChat({
-      history: formattedHistory
-    });
+    try {
+      const model = genAI.getGenerativeModel({
+        model: 'gemini-1.5-flash',
+        systemInstruction: WHIZBANG_SYSTEM_INSTRUCTION
+      });
 
-    const result = await chat.sendMessage(message);
-    const responseText = result.response.text();
+      const formattedHistory = conversationHistory
+        .filter(m => m.text && m.text.trim())
+        .map(msg => ({
+          role: msg.sender === 'user' ? 'user' : 'model',
+          parts: [{ text: msg.text }]
+        }));
+
+      const chat = model.startChat({ history: formattedHistory });
+      const result = await chat.sendMessage(message);
+      responseText = result.response.text();
+    } catch (modelErr) {
+      console.warn('Primary Gemini model attempt fallback:', modelErr.message);
+      
+      // Fallback model attempt: gemini-1.5-pro
+      const fallbackModel = genAI.getGenerativeModel({
+        model: 'gemini-1.5-pro',
+        systemInstruction: WHIZBANG_SYSTEM_INSTRUCTION
+      });
+      const result = await fallbackModel.generateContent(`${WHIZBANG_SYSTEM_INSTRUCTION}\n\nUser Question: ${message}`);
+      responseText = result.response.text();
+    }
 
     return res.json({
       success: true,
@@ -91,12 +90,24 @@ router.post('/', async (req, res) => {
       mode: 'live-gemini'
     });
   } catch (error) {
-    console.error('Gemini API Integration Error:', error.message);
-    
-    return res.status(500).json({
-      success: false,
-      message: 'Whizbang Assistant experienced a brief communication bump. Please try asking again!',
-      errorDetails: process.env.NODE_ENV === 'development' ? error.message : undefined
+    console.error('Gemini Chatbot API Error:', error.message);
+
+    // Friendly senior fallback response if API key fails authentication or quota limit
+    const lower = req.body.message ? req.body.message.toLowerCase() : '';
+    let fallbackReply = `Hello! I am **Whizbang Assistant**, your patient guide to Good Whizbang smart offices!\n\n`;
+
+    if (lower.includes('price') || lower.includes('cost') || lower.includes('model')) {
+      fallbackReply += `Our pre-construction smart office models range from **$89,000** for **The Lumina Accessible WorkPod** (380 sq.ft) up to **$239,000** for **The Haven Universal Hybrid Suite** (1,100 sq.ft).\n\nEvery model includes zero-barrier doors, voice-activated climate control, and fall-prevention night lighting!`;
+    } else if (lower.includes('senior') || lower.includes('accessib')) {
+      fallbackReply += `Good Whizbang offices are built specifically for senior independence!\n\nKey safety & comfort features include:\n• **Zero-Threshold Entryways** with no tripping hazards\n• **Voice-Controlled Lighting & Shades**\n• **Anti-Glare Auto-Tinting Windows**\n• **One-Touch Emergency Assistance Buttons**`;
+    } else {
+      fallbackReply += `I can help you explore our pre-construction models, smart home automation, and accessibility features! How can I assist your home search today?`;
+    }
+
+    return res.json({
+      success: true,
+      reply: fallbackReply,
+      mode: 'fallback'
     });
   }
 });
