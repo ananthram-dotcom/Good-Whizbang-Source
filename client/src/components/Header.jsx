@@ -29,36 +29,36 @@ export default function Header({ activeTab, setActiveTab, extraLargeFont, setExt
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-whizbang-dark/95 backdrop-blur-md border-b border-whizbang-lightgrey/60 shadow-xl">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-40 bg-whizbang-dark/95 backdrop-blur-md border-b border-whizbang-lightgrey/60 shadow-xl w-full">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
         <div className="flex items-center justify-between h-20 gap-2">
           
           {/* Brand Logo */}
           <button 
             onClick={() => setActiveTab('home')}
-            className="flex items-center gap-2.5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-whizbang-cyan rounded-xl p-1 group flex-shrink-0"
+            className="flex items-center gap-2 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-whizbang-cyan rounded-xl p-1 group flex-shrink-0"
             aria-label="Good Whizbang Home Page"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-whizbang-orange via-amber-500 to-whizbang-cyan flex items-center justify-center shadow-md shadow-whizbang-orange/30 group-hover:scale-105 transition-transform">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-whizbang-orange via-amber-500 to-whizbang-cyan flex items-center justify-center shadow-md shadow-whizbang-orange/30 group-hover:scale-105 transition-transform">
               <Zap className="w-5 h-5 text-white fill-white" />
             </div>
-            <div>
-              <span className="font-extrabold text-xl sm:text-2xl tracking-tight text-white block leading-none">
+            <div className="hidden sm:block">
+              <span className="font-extrabold text-lg sm:text-xl tracking-tight text-white block leading-none">
                 Good <span className="text-whizbang-orange">Whizbang</span>
               </span>
-              <span className="text-[10px] font-semibold text-whizbang-cyan tracking-wider uppercase block mt-0.5">
+              <span className="text-[9px] font-semibold text-whizbang-cyan tracking-wider uppercase block mt-0.5">
                 Senior Smart Spaces
               </span>
             </div>
           </button>
 
-          {/* Center Navigation Links - Compact & Perfectly Spaced */}
-          <nav className="hidden lg:flex items-center gap-1" aria-label="Main Navigation">
+          {/* Center Navigation Links */}
+          <nav className="hidden md:flex items-center gap-1" aria-label="Main Navigation">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={`px-3 py-2 rounded-xl text-base font-extrabold transition-all duration-200 min-h-[42px] whitespace-nowrap ${
+                className={`px-3 py-1.5 rounded-xl text-sm sm:text-base font-extrabold transition-all duration-200 min-h-[38px] whitespace-nowrap ${
                   activeTab === item.id
                     ? 'bg-whizbang-orange text-white shadow-md shadow-whizbang-orange/30'
                     : 'text-gray-300 hover:text-white hover:bg-whizbang-slate'
@@ -70,13 +70,13 @@ export default function Header({ activeTab, setActiveTab, extraLargeFont, setExt
             ))}
           </nav>
 
-          {/* Right Action Controls Box - Rectangular & Perfectly Aligned */}
-          <div className="hidden md:flex items-center gap-2 flex-shrink-0">
+          {/* Right Action & Accessibility Controls (Comfortably inside viewport rectangle) */}
+          <div className="hidden md:flex items-center gap-1.5 flex-shrink-0">
             
             {/* Senior Voice Read-Aloud Assist */}
             <button
               onClick={handleSpeakOverview}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-extrabold min-h-[42px] whitespace-nowrap transition-all ${
+              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl border text-xs font-extrabold min-h-[38px] whitespace-nowrap transition-all ${
                 speechActive
                   ? 'bg-teal-500/20 border-teal-400 text-teal-300 animate-pulse'
                   : 'bg-whizbang-slate border-whizbang-lightgrey text-gray-300 hover:text-white'
@@ -84,14 +84,14 @@ export default function Header({ activeTab, setActiveTab, extraLargeFont, setExt
               title="Listen to Senior Audio Overview"
               aria-label="Listen to Senior Audio Overview"
             >
-              <Volume2 className="w-4 h-4 text-teal-400" />
-              <span>{speechActive ? 'Stop Voice' : 'Listen Audio'}</span>
+              <Volume2 className="w-3.5 h-3.5 text-teal-400" />
+              <span>{speechActive ? 'Stop' : 'Listen'}</span>
             </button>
 
             {/* Senior Print Size Toggle */}
             <button
               onClick={() => setExtraLargeFont(!extraLargeFont)}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-extrabold min-h-[42px] whitespace-nowrap transition-colors ${
+              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl border text-xs font-extrabold min-h-[38px] whitespace-nowrap transition-colors ${
                 extraLargeFont
                   ? 'bg-whizbang-cyan/20 border-whizbang-cyan text-whizbang-cyan'
                   : 'bg-whizbang-slate border-whizbang-lightgrey text-gray-300 hover:text-white'
@@ -99,14 +99,14 @@ export default function Header({ activeTab, setActiveTab, extraLargeFont, setExt
               title="Toggle Large Senior Print Mode"
               aria-label="Toggle Senior Extra Large Font Size Mode"
             >
-              <Type className="w-4 h-4" />
+              <Type className="w-3.5 h-3.5" />
               <span>{extraLargeFont ? 'Print: XL' : 'Print: Normal'}</span>
             </button>
 
-            {/* Rectangular Gemini AI Assistant Button (Fixed Clipping) */}
+            {/* AI Assistant Button - Always 100% inside the viewport rectangle */}
             <button
               onClick={() => setIsChatOpen(true)}
-              className="flex items-center gap-2 bg-gradient-to-r from-whizbang-cyan to-teal-400 hover:from-cyan-300 hover:to-teal-300 text-whizbang-dark font-black px-4 py-2 rounded-xl shadow-md min-h-[42px] whitespace-nowrap transition-all transform hover:scale-[1.02] active:scale-[0.98] border border-whizbang-cyan"
+              className="flex items-center gap-1.5 bg-gradient-to-r from-whizbang-cyan to-teal-400 hover:from-cyan-300 hover:to-teal-300 text-whizbang-dark font-black px-3.5 py-1.5 rounded-xl shadow-md min-h-[38px] text-xs whitespace-nowrap transition-all transform hover:scale-[1.02] active:scale-[0.98] border border-whizbang-cyan ml-1"
               aria-label="Open Whizbang Gemini AI Assistant"
             >
               <Bot className="w-4 h-4 flex-shrink-0" />
@@ -115,21 +115,21 @@ export default function Header({ activeTab, setActiveTab, extraLargeFont, setExt
           </div>
 
           {/* Mobile Hamburger Toggle */}
-          <div className="flex md:hidden items-center gap-2">
+          <div className="flex md:hidden items-center gap-1.5">
             <button
               onClick={() => setIsChatOpen(true)}
-              className="px-3 py-2 bg-whizbang-cyan text-whizbang-dark rounded-xl font-black text-sm min-h-[42px] flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-whizbang-cyan text-whizbang-dark rounded-xl font-black text-xs min-h-[38px] flex items-center gap-1"
               aria-label="Open AI Chatbot"
             >
               <Bot className="w-4 h-4" />
-              <span>AI</span>
+              <span>AI Assistant</span>
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 bg-whizbang-slate text-white rounded-xl border border-whizbang-lightgrey min-h-[42px] min-w-[42px] flex items-center justify-center"
+              className="p-1.5 bg-whizbang-slate text-white rounded-xl border border-whizbang-lightgrey min-h-[38px] min-w-[38px] flex items-center justify-center"
               aria-label="Toggle Navigation Menu"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
 
