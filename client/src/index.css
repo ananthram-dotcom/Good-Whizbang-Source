@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 18px; /* Base 18px body font minimum for senior accessibility */
+    scroll-behavior: smooth;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+  }
+}
+
+/* Accessible focus ring for keyboard navigation */
+:focus-visible {
+  outline: 3px solid #00F0FF !important;
+  outline-offset: 3px !important;
+}
+
+/* Ensure minimum touch target size (48x48px) for buttons and inputs */
+button, a.btn-accessible, input, select {
+  min-height: 48px;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #111827;
+}
+::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #FF6B00;
+}
