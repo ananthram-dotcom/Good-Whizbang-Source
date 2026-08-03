@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://good-whizbang-server.onrender.com/api/:path*"
+    }
+  ]
+}
