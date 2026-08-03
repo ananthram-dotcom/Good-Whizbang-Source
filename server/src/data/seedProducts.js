@@ -49,6 +49,49 @@ const seedProducts = [
     ]
   },
   {
+    _id: "66b1a201f1e2d3c4b5a69705",
+    slug: "solis-solar-penthouse-pod",
+    name: "The Solis Solar Penthouse Pod",
+    tagline: "Elevated single-level rooftop workspace with full panoramic glass & battery solar roof.",
+    description: "The Solis Penthouse Pod combines breathtaking 360-degree views with senior accessibility. Built with zero-step ramped entry, automated electrochromic auto-tinting glass that eliminates eye strain, and a high-capacity solar tile roof that provides independent 72-hour power backup.",
+    startingPrice: 125000,
+    priceFormatted: "$125,000",
+    sqft: 480,
+    bedrooms: 0,
+    bathrooms: 1,
+    estCompletion: "Q1 2027",
+    category: "Penthouse Pod",
+    badge: "Solar Tech",
+    imageUrl: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+    accessibilityFeatures: [
+      "Panoramic zero-glare electrochromic windows tint automatically based on sun position",
+      "Integrated slow-speech voice recognition for hands-free temperature & blinds adjustment",
+      "Ramped elevator transition with wide zero-lip entryways",
+      "Anti-glare overhead light diffusers rated 98+ CRI",
+      "Smart moisture & climate sensors with automated HEPA air purification"
+    ],
+    smartFeatures: [
+      {
+        name: "360 Auto-Tinting Glass Shield",
+        description: "Filters 99% UV rays and prevents glare on digital screens automatically.",
+        icon: "eye",
+        enabledByDefault: true
+      },
+      {
+        name: "Solar Roof Battery Storage",
+        description: "Integrated solar tiles generate clean energy with live power storage tracking.",
+        icon: "zap",
+        enabledByDefault: true
+      },
+      {
+        name: "Voice-Command Ergonomic Furniture",
+        description: "Adjust seating and desk height with clear verbal instructions.",
+        icon: "mic",
+        enabledByDefault: true
+      }
+    ]
+  },
+  {
     _id: "66b1a201f1e2d3c4b5a69702",
     slug: "apex-executive-smart-office",
     name: "The Apex Executive Smart Office",
@@ -87,12 +130,6 @@ const seedProducts = [
         name: "Voice Air Quality & HEPA Purifier",
         description: "Continuous real-time air quality monitoring with ultra-quiet surgical HEPA filtration.",
         icon: "wind",
-        enabledByDefault: true
-      },
-      {
-        name: "One-Touch Presentation Lighting",
-        description: "Preset lighting modes for video calls, deep focus reading, or client meetings.",
-        icon: "video",
         enabledByDefault: true
       }
     ]
@@ -137,12 +174,6 @@ const seedProducts = [
         description: "Non-camera radar motion monitoring guarantees privacy while maintaining perimeter security.",
         icon: "shield",
         enabledByDefault: true
-      },
-      {
-        name: "Voice Climate Control",
-        description: "Instant verbal adjustment for heating, cooling, and humidity.",
-        icon: "thermometer",
-        enabledByDefault: true
       }
     ]
   },
@@ -186,11 +217,48 @@ const seedProducts = [
         description: "Automatic main valve shut-off triggers instantly if moisture is detected.",
         icon: "droplet",
         enabledByDefault: true
+      }
+    ]
+  },
+  {
+    _id: "66b1a201f1e2d3c4b5a69706",
+    slug: "tranquility-wellness-care-suite",
+    name: "The Tranquility Wellness & Care Estate",
+    tagline: "Luxury multi-room accessibility suite with hydrotherapy voice bath & circadian skylights.",
+    description: "The Tranquility Estate is our flagship luxury pre-construction model. Crafted for seniors seeking ultimate comfort, it features an integrated hydrotherapy voice-controlled bath, motorized skylights that sync with circadian health, digital telemetry health sensors, and a seamless indoor-to-patio zero-threshold garden transition.",
+    startingPrice: 285000,
+    priceFormatted: "$285,000",
+    sqft: 1350,
+    bedrooms: 2,
+    bathrooms: 2,
+    estCompletion: "Q4 2027",
+    category: "Wellness Suite",
+    badge: "Flagship Luxury",
+    imageUrl: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+    accessibilityFeatures: [
+      "Digital hydrotherapy bath & roll-in shower with voice temperature memory",
+      "Motorized circadian skylights that open and close based on indoor air quality & weather",
+      "Non-intrusive radar telemetry for fall-prevention and caregiver wellness alerts",
+      "Zero-threshold sliding glass wall opening seamlessly onto private garden terrace",
+      "Dual voice-controlled sit-to-stand desks for joint-free working"
+    ],
+    smartFeatures: [
+      {
+        name: "Hydrotherapy Voice Control Bath",
+        description: "Fill water, set temperature, and trigger air jets with simple spoken phrases.",
+        icon: "droplet",
+        enabledByDefault: true
       },
       {
-        name: "Integrated Health & Air Sensors",
-        description: "Monitors oxygen, humidity, CO2, and indoor dust levels silently.",
-        icon: "activity",
+        name: "Circadian Skylight System",
+        description: "Motorized skylights adjust light spectrum and fresh air flow automatically.",
+        icon: "sun",
+        enabledByDefault: true
+      },
+      {
+        name: "Radar Telemetry Safety Alert",
+        description: "Monitors daily movement non-intrusively to ensure safety without cameras.",
+        icon: "shield",
         enabledByDefault: true
       }
     ]

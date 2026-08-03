@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Zap, Send, CheckCircle2, ShieldCheck, PhoneCall, Mail, MapPin } from 'lucide-react';
+import Logo from './Logo';
 
 export default function Footer({ setActiveTab }) {
   const [email, setEmail] = useState('');
@@ -36,7 +37,6 @@ export default function Footer({ setActiveTab }) {
       }
     } catch (err) {
       console.error('Newsletter submission error:', err);
-      // Client-side fallback message
       setStatus({
         loading: false,
         message: 'Subscribed successfully! You will receive pre-construction updates.',
@@ -81,7 +81,7 @@ export default function Footer({ setActiveTab }) {
                 <button
                   type="submit"
                   disabled={status.loading}
-                  className="bg-whizbang-orange hover:bg-orange-600 text-white font-extrabold px-8 py-4 rounded-xl min-h-[56px] text-lg flex items-center justify-center gap-2 shadow-lg shadow-whizbang-orange/30 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
+                  className="bg-whizbang-orange hover:bg-orange-600 text-white font-extrabold px-8 py-4 rounded-xl min-h-[56px] text-lg flex items-center justify-center gap-2 shadow-lg shadow-whizbang-orange/30 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40"
                 >
                   {status.loading ? 'Subscribing...' : 'Subscribe Free'}
                   <Send className="w-5 h-5" />
@@ -112,15 +112,10 @@ export default function Footer({ setActiveTab }) {
         {/* Footer Navigation & Columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-whizbang-lightgrey/50">
           
-          {/* Brand Info */}
+          {/* Brand Info with New Logo */}
           <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-whizbang-orange flex items-center justify-center">
-                <Zap className="w-6 h-6 text-white" />
-              </div>
-              <span className="font-extrabold text-2xl text-white">Good Whizbang</span>
-            </div>
-            <p className="text-lg text-gray-300 leading-relaxed">
+            <Logo />
+            <p className="text-lg text-gray-300 leading-relaxed pt-2">
               Empowering active seniors and modern work-from-home professionals with pre-construction smart office & home spaces engineered for accessibility, safety, and joy.
             </p>
           </div>
@@ -165,6 +160,7 @@ export default function Footer({ setActiveTab }) {
               <li>• Anti-Glare Auto-Tinting Glass</li>
               <li>• Night Fall-Prevention Amber Lights</li>
               <li>• 1-Touch Emergency Assistance</li>
+              <li>• Hydrotherapy Bathing Suites</li>
             </ul>
           </div>
 

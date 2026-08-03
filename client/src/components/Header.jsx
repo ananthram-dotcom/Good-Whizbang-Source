@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Zap, Bot, Type, Menu, X, Volume2 } from 'lucide-react';
+import { Bot, Type, Menu, X, Volume2 } from 'lucide-react';
+import Logo from './Logo';
 
 export default function Header({ activeTab, setActiveTab, extraLargeFont, setExtraLargeFont, setIsChatOpen }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -33,23 +34,13 @@ export default function Header({ activeTab, setActiveTab, extraLargeFont, setExt
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
         <div className="flex items-center justify-between h-20 gap-2">
           
-          {/* Brand Logo */}
+          {/* Elegant Brand Logo */}
           <button 
             onClick={() => setActiveTab('home')}
-            className="flex items-center gap-2 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-whizbang-cyan rounded-xl p-1 group flex-shrink-0"
+            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-whizbang-cyan rounded-xl p-1 flex-shrink-0"
             aria-label="Good Whizbang Home Page"
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-whizbang-orange via-amber-500 to-whizbang-cyan flex items-center justify-center shadow-md shadow-whizbang-orange/30 group-hover:scale-105 transition-transform">
-              <Zap className="w-5 h-5 text-white fill-white" />
-            </div>
-            <div className="hidden sm:block">
-              <span className="font-extrabold text-lg sm:text-xl tracking-tight text-white block leading-none">
-                Good <span className="text-whizbang-orange">Whizbang</span>
-              </span>
-              <span className="text-[9px] font-semibold text-whizbang-cyan tracking-wider uppercase block mt-0.5">
-                Senior Smart Spaces
-              </span>
-            </div>
+            <Logo />
           </button>
 
           {/* Center Navigation Links */}
@@ -70,7 +61,7 @@ export default function Header({ activeTab, setActiveTab, extraLargeFont, setExt
             ))}
           </nav>
 
-          {/* Right Action & Accessibility Controls (Comfortably inside viewport rectangle) */}
+          {/* Right Action & Accessibility Controls */}
           <div className="hidden md:flex items-center gap-1.5 flex-shrink-0">
             
             {/* Senior Voice Read-Aloud Assist */}
@@ -103,7 +94,7 @@ export default function Header({ activeTab, setActiveTab, extraLargeFont, setExt
               <span>{extraLargeFont ? 'Print: XL' : 'Print: Normal'}</span>
             </button>
 
-            {/* AI Assistant Button - Always 100% inside the viewport rectangle */}
+            {/* AI Assistant Button */}
             <button
               onClick={() => setIsChatOpen(true)}
               className="flex items-center gap-1.5 bg-gradient-to-r from-whizbang-cyan to-teal-400 hover:from-cyan-300 hover:to-teal-300 text-whizbang-dark font-black px-3.5 py-1.5 rounded-xl shadow-md min-h-[38px] text-xs whitespace-nowrap transition-all transform hover:scale-[1.02] active:scale-[0.98] border border-whizbang-cyan ml-1"
@@ -161,7 +152,7 @@ export default function Header({ activeTab, setActiveTab, extraLargeFont, setExt
                 handleSpeakOverview();
                 setMobileMenuOpen(false);
               }}
-              className="w-full text-left px-4 py-3 rounded-xl text-lg font-bold bg-whizbang-dark text-teal-300 min-h-[48px] flex items-center gap-2"
+              className="w-full text-left px-4 py-3 rounded-lg text-lg font-bold bg-whizbang-dark text-teal-300 min-h-[48px] flex items-center gap-2"
             >
               <Volume2 className="w-5 h-5" />
               <span>Senior Voice Read-Aloud Assist</span>
@@ -171,7 +162,7 @@ export default function Header({ activeTab, setActiveTab, extraLargeFont, setExt
                 setExtraLargeFont(!extraLargeFont);
                 setMobileMenuOpen(false);
               }}
-              className="w-full text-left px-4 py-3 rounded-xl text-lg font-bold bg-whizbang-dark text-whizbang-cyan min-h-[48px] flex items-center gap-2"
+              className="w-full text-left px-4 py-3 rounded-lg text-lg font-bold bg-whizbang-dark text-whizbang-cyan min-h-[48px] flex items-center gap-2"
             >
               <Type className="w-5 h-5" />
               <span>Senior Print Size: {extraLargeFont ? 'Extra Large' : 'Standard'}</span>

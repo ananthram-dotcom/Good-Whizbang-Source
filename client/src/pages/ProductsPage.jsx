@@ -6,7 +6,7 @@ export default function ProductsPage({ setIsChatOpen }) {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [activeModalProduct, setActiveModalProduct] = useState(null);
-  const [modalTab, setModalTab] = useState('photos'); // 'photos', 'blueprint', 'specs'
+  const [modalTab, setModalTab] = useState('photos');
   const [reservationSubmitted, setReservationSubmitted] = useState(false);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function ProductsPage({ setIsChatOpen }) {
     }
   };
 
-  const categories = ['All', 'Compact WorkPod', 'Executive Suite', 'Garden Studio', 'Flex Hybrid Office'];
+  const categories = ['All', 'Compact WorkPod', 'Penthouse Pod', 'Executive Suite', 'Garden Studio', 'Wellness Suite', 'Flex Hybrid Office'];
 
   const filteredProducts = selectedCategory === 'All'
     ? products
@@ -42,20 +42,20 @@ export default function ProductsPage({ setIsChatOpen }) {
           <Zap className="w-4 h-4 fill-whizbang-orange" /> Pre-Construction Smart Catalog
         </div>
         <h1 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
-          Pre-Construction Smart Office Models
+          Pre-Construction Smart Office & Living Models
         </h1>
         <p className="text-xl text-gray-200 leading-relaxed">
-          Engineered for active seniors with zero-threshold entries, voice environmental controls, and circadian health illumination.
+          Engineered for active seniors with zero-threshold entries, voice environmental controls, circadian health illumination, and solar battery energy storage.
         </p>
       </div>
 
       {/* Category Filter Buttons */}
-      <div className="flex flex-wrap items-center justify-center gap-3">
+      <div className="flex flex-wrap items-center justify-center gap-2.5">
         {categories.map((cat) => (
           <button
             key={cat}
             onClick={() => setSelectedCategory(cat)}
-            className={`px-5 py-3 rounded-xl text-lg font-extrabold min-h-[48px] transition-all ${
+            className={`px-4 py-2.5 rounded-xl text-sm sm:text-base font-extrabold min-h-[44px] transition-all ${
               selectedCategory === cat
                 ? 'bg-whizbang-orange text-white shadow-lg shadow-whizbang-orange/30'
                 : 'bg-whizbang-slate text-gray-300 hover:text-white border border-whizbang-lightgrey'
@@ -66,53 +66,53 @@ export default function ProductsPage({ setIsChatOpen }) {
         ))}
       </div>
 
-      {/* Product Cards Grid */}
+      {/* Product Cards Grid (6 Models) */}
       {loading ? (
         <div className="text-center py-16 space-y-4">
           <div className="w-12 h-12 border-4 border-whizbang-orange border-t-transparent rounded-full animate-spin mx-auto"></div>
           <p className="text-xl font-bold text-gray-300">Loading pre-construction models...</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProducts.map((product) => (
             <div
               key={product._id || product.slug}
-              className="bg-whizbang-slate border-2 border-whizbang-lightgrey hover:border-whizbang-cyan rounded-3xl overflow-hidden shadow-2xl transition-all flex flex-col justify-between"
+              className="bg-whizbang-slate border-2 border-whizbang-lightgrey hover:border-whizbang-cyan rounded-3xl overflow-hidden shadow-2xl transition-all flex flex-col justify-between group"
             >
               {/* Product Image & Badge */}
-              <div className="relative">
+              <div className="relative overflow-hidden">
                 <img
                   src={product.imageUrl}
                   alt={product.name}
-                  className="w-full h-64 object-cover"
+                  className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute top-4 left-4 bg-whizbang-dark/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-whizbang-lightgrey text-whizbang-cyan font-extrabold text-sm uppercase">
+                <div className="absolute top-4 left-4 bg-whizbang-dark/90 backdrop-blur-md px-3 py-1 rounded-full border border-whizbang-lightgrey text-whizbang-cyan font-extrabold text-xs uppercase">
                   {product.badge || product.category}
                 </div>
-                <div className="absolute top-4 right-4 bg-whizbang-orange text-white px-4 py-1.5 rounded-full font-black text-xl shadow-lg">
+                <div className="absolute top-4 right-4 bg-whizbang-orange text-white px-3.5 py-1 rounded-full font-black text-lg shadow-lg">
                   {product.priceFormatted}
                 </div>
               </div>
 
               {/* Product Info Body */}
-              <div className="p-6 sm:p-8 space-y-5 flex-1 flex flex-col justify-between">
+              <div className="p-6 space-y-5 flex-1 flex flex-col justify-between">
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between text-sm font-bold text-gray-400">
+                  <div className="flex items-center justify-between text-xs font-bold text-gray-400">
                     <span>Est. Completion: <strong className="text-whizbang-cyan">{product.estCompletion}</strong></span>
                     <span>Floor Area: <strong className="text-white">{product.sqft} sq.ft</strong></span>
                   </div>
 
-                  <h2 className="text-3xl font-extrabold text-white">{product.name}</h2>
-                  <p className="text-lg text-gray-300 leading-relaxed">{product.tagline}</p>
+                  <h2 className="text-2xl font-extrabold text-white leading-tight">{product.name}</h2>
+                  <p className="text-base text-gray-300 leading-relaxed">{product.tagline}</p>
                 </div>
 
                 {/* Senior Accessibility Bullet Checklist */}
                 <div className="space-y-2 pt-2 border-t border-whizbang-lightgrey/60">
-                  <h3 className="text-sm font-bold uppercase tracking-wider text-whizbang-cyan">Senior Accessibility Features:</h3>
-                  <ul className="space-y-1.5 text-base text-gray-200">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-whizbang-cyan">Senior Accessibility Standards:</h3>
+                  <ul className="space-y-1 text-sm text-gray-200">
                     {product.accessibilityFeatures?.slice(0, 3).map((feat, idx) => (
                       <li key={idx} className="flex items-start gap-2">
-                        <CheckCircle className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
                         <span>{feat}</span>
                       </li>
                     ))}
@@ -120,22 +120,22 @@ export default function ProductsPage({ setIsChatOpen }) {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="pt-4 flex flex-col sm:flex-row gap-3">
+                <div className="pt-3 flex flex-col sm:flex-row gap-2">
                   <button
                     onClick={() => {
                       setActiveModalProduct(product);
                       setModalTab('photos');
                     }}
-                    className="flex-1 bg-whizbang-orange hover:bg-orange-600 text-white font-extrabold text-lg px-6 py-3.5 rounded-xl min-h-[52px] shadow-md flex items-center justify-center gap-2 transition-all"
+                    className="flex-1 bg-whizbang-orange hover:bg-orange-600 text-white font-extrabold text-base px-4 py-3 rounded-xl min-h-[44px] shadow-md flex items-center justify-center gap-1.5 transition-all"
                   >
-                    View Full Specs & Features <ChevronRight className="w-5 h-5" />
+                    View Specs <ChevronRight className="w-4 h-4" />
                   </button>
 
                   <button
                     onClick={() => setIsChatOpen(true)}
-                    className="bg-whizbang-dark hover:bg-whizbang-lightgrey text-whizbang-cyan border border-whizbang-cyan font-extrabold px-5 py-3.5 rounded-xl min-h-[52px] flex items-center justify-center gap-2 transition-all"
+                    className="bg-whizbang-dark hover:bg-whizbang-lightgrey text-whizbang-cyan border border-whizbang-cyan font-extrabold px-4 py-3 rounded-xl min-h-[44px] flex items-center justify-center gap-1.5 transition-all text-sm"
                   >
-                    <Sparkles className="w-5 h-5" /> Ask AI
+                    <Sparkles className="w-4 h-4" /> Ask AI
                   </button>
                 </div>
 
@@ -155,7 +155,7 @@ export default function ProductsPage({ setIsChatOpen }) {
                 setActiveModalProduct(null);
                 setReservationSubmitted(false);
               }}
-              className="absolute top-6 right-6 p-2 text-gray-300 hover:text-white bg-whizbang-dark rounded-xl border border-whizbang-lightgrey min-h-[48px] min-w-[48px] flex items-center justify-center"
+              className="absolute top-6 right-6 p-2 text-gray-300 hover:text-white bg-whizbang-dark rounded-xl border border-whizbang-lightgrey min-h-[44px] min-w-[44px] flex items-center justify-center"
               aria-label="Close Model Details"
             >
               <X className="w-6 h-6" />
@@ -169,7 +169,7 @@ export default function ProductsPage({ setIsChatOpen }) {
               <p className="text-2xl font-black text-whizbang-cyan">{activeModalProduct.priceFormatted} starting price</p>
             </div>
 
-            {/* Interactive View Tabs (UI Innovation) */}
+            {/* Interactive View Tabs */}
             <div className="flex gap-2 border-b border-whizbang-lightgrey pb-2">
               <button
                 onClick={() => setModalTab('photos')}
