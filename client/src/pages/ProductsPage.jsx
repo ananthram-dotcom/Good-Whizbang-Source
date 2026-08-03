@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Zap, CheckCircle, ArrowRight, Sparkles, Filter, X, Shield, PhoneCall, ChevronRight } from 'lucide-react';
+import { Zap, CheckCircle, ArrowRight, Sparkles, Filter, X, Shield, PhoneCall, ChevronRight, Layers, Eye, Image } from 'lucide-react';
 
 export default function ProductsPage({ setIsChatOpen }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [activeModalProduct, setActiveModalProduct] = useState(null);
+  const [modalTab, setModalTab] = useState('photos'); // 'photos', 'blueprint', 'specs'
   const [reservationSubmitted, setReservationSubmitted] = useState(false);
 
   useEffect(() => {
@@ -121,7 +122,10 @@ export default function ProductsPage({ setIsChatOpen }) {
                 {/* Action Buttons */}
                 <div className="pt-4 flex flex-col sm:flex-row gap-3">
                   <button
-                    onClick={() => setActiveModalProduct(product)}
+                    onClick={() => {
+                      setActiveModalProduct(product);
+                      setModalTab('photos');
+                    }}
                     className="flex-1 bg-whizbang-orange hover:bg-orange-600 text-white font-extrabold text-lg px-6 py-3.5 rounded-xl min-h-[52px] shadow-md flex items-center justify-center gap-2 transition-all"
                   >
                     View Full Specs & Features <ChevronRight className="w-5 h-5" />
@@ -141,7 +145,7 @@ export default function ProductsPage({ setIsChatOpen }) {
         </div>
       )}
 
-      {/* DETAIL MODAL */}
+      {/* ENHANCED MODEL DETAIL MODAL WITH MULTI-VIEW TABS */}
       {activeModalProduct && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-md p-4 sm:p-6 flex items-center justify-center">
           <div className="bg-whizbang-slate border-2 border-whizbang-cyan rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-10 shadow-2xl relative space-y-6">
@@ -165,11 +169,48 @@ export default function ProductsPage({ setIsChatOpen }) {
               <p className="text-2xl font-black text-whizbang-cyan">{activeModalProduct.priceFormatted} starting price</p>
             </div>
 
-            <img
-              src={activeModalProduct.imageUrl}
-              alt={activeModalProduct.name}
-              className="w-full h-72 object-cover rounded-2xl border border-whizbang-lightgrey"
-            />
+            {/* Interactive View Tabs (UI Innovation) */}
+            <div className="flex gap-2 border-b border-whizbang-lightgrey pb-2">
+              <button
+                onClick={() => setModalTab('photos')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-base font-extrabold min-h-[44px] ${
+                  modalTab === 'photos' ? 'bg-whizbang-orange text-white' : 'text-gray-300 hover:bg-whizbang-dark'
+                }`}
+              >
+                <Image className="w-4 h-4" /> Exterior View
+              </button>
+              <button
+                onClick={() => setModalTab('blueprint')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-base font-extrabold min-h-[44px] ${
+                  modalTab === 'blueprint' ? 'bg-whizbang-cyan text-whizbang-dark' : 'text-gray-300 hover:bg-whizbang-dark'
+                }`}
+              >
+                <Layers className="w-4 h-4" /> Floorplan Layout
+              </button>
+            </div>
+
+            {modalTab === 'photos' && (
+              <img
+                src={activeModalProduct.imageUrl}
+                alt={activeModalProduct.name}
+                className="w-full h-72 object-cover rounded-2xl border border-whizbang-lightgrey"
+              />
+            )}
+
+            {modalTab === 'blueprint' && (
+              <div className="bg-whizbang-dark border-2 border-whizbang-cyan/40 p-6 rounded-2xl text-center space-y-4">
+                <div className="p-4 bg-whizbang-slate rounded-xl border border-whizbang-lightgrey inline-block">
+                  <span className="text-whizbang-cyan font-bold text-lg block">📐 Senior Blueprint Specifications</span>
+                  <span className="text-gray-300 text-sm">Single Level • 36" Zero-Threshold Doors • 5ft Turning Radius</span>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm text-gray-200">
+                  <div className="p-3 bg-whizbang-slate rounded-xl">🚪 36" Sliding Doors</div>
+                  <div className="p-3 bg-whizbang-slate rounded-xl">⚡ 48" Light Switch Height</div>
+                  <div className="p-3 bg-whizbang-slate rounded-xl">🪟 Anti-Glare Windows</div>
+                  <div className="p-3 bg-whizbang-slate rounded-xl">💡 Amber Night Floor Guides</div>
+                </div>
+              </div>
+            )}
 
             <p className="text-xl text-gray-200 leading-relaxed">{activeModalProduct.description}</p>
 

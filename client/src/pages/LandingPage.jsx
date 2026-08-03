@@ -1,6 +1,7 @@
 import React from 'react';
-import { Zap, ShieldCheck, HeartHandshake, Eye, Sparkles, ArrowRight, CheckCircle, Users, Award, Star } from 'lucide-react';
+import { Zap, ShieldCheck, HeartHandshake, Eye, Sparkles, ArrowRight, CheckCircle, Users, Award, Star, PhoneCall } from 'lucide-react';
 import SmartFeatureToggle from '../components/SmartFeatureToggle';
+import MortgageSavingsCalculator from '../components/MortgageSavingsCalculator';
 
 export default function LandingPage({ setActiveTab, setIsChatOpen }) {
   const highlights = [
@@ -39,6 +40,21 @@ export default function LandingPage({ setActiveTab, setIsChatOpen }) {
       role: "VP of Senior Experience & Design",
       bio: "Dedicated to creating empowering, joyful workspace models for active retirees & remote professionals.",
       image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80"
+    }
+  ];
+
+  const seniorReviews = [
+    {
+      name: "Arthur & Margaret K.",
+      location: "Retired Educators",
+      quote: "The voice climate controls and zero-threshold entry allow Arthur to consult from home without straining his joints. Good Whizbang thought of everything!",
+      model: "The Lumina WorkPod"
+    },
+    {
+      name: "Robert S.",
+      location: "Financial Advisor (Age 68)",
+      quote: "The auto-tinting privacy glass eliminates afternoon glare on my screens completely. I love showing off the smart automation to my clients.",
+      model: "The Apex Executive Suite"
     }
   ];
 
@@ -166,6 +182,40 @@ export default function LandingPage({ setActiveTab, setIsChatOpen }) {
       {/* INTERACTIVE FEATURE SHOWCASE */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SmartFeatureToggle />
+      </section>
+
+      {/* INTERACTIVE MORTGAGE & SAVINGS CALCULATOR (UI INNOVATION) */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <MortgageSavingsCalculator />
+      </section>
+
+      {/* SENIOR TESTIMONIAL REVIEWS */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-2xl mx-auto mb-10">
+          <div className="inline-flex items-center gap-1.5 text-amber-400 font-bold mb-2">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} className="w-5 h-5 fill-amber-400" />
+            ))}
+          </div>
+          <h2 className="text-3xl font-extrabold text-white">Loved by Active Seniors & Retirees</h2>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          {seniorReviews.map((rev, idx) => (
+            <div key={idx} className="bg-whizbang-slate border border-whizbang-lightgrey rounded-3xl p-8 space-y-4 shadow-xl">
+              <p className="text-xl text-gray-200 italic leading-relaxed">"{rev.quote}"</p>
+              <div className="flex justify-between items-center pt-3 border-t border-whizbang-lightgrey/50 text-sm">
+                <div>
+                  <span className="font-extrabold text-white text-base block">{rev.name}</span>
+                  <span className="text-whizbang-cyan font-semibold">{rev.location}</span>
+                </div>
+                <span className="px-3 py-1 bg-whizbang-dark border border-whizbang-orange/40 text-whizbang-orange font-extrabold rounded-lg">
+                  {rev.model}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* ABOUT THE TEAM SPOTLIGHT SECTION */}
