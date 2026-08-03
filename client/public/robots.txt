@@ -1,0 +1,6 @@
+# Good Whizbang Robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap Location
+Sitemap: https://goodwhizbang.vercel.app/sitemap.xml
