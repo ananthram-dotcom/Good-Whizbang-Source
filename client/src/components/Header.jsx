@@ -31,10 +31,10 @@ export default function Header({ activeTab, setActiveTab, extraLargeFont, setExt
 
   return (
     <header className="sticky top-0 z-40 bg-whizbang-dark/95 backdrop-blur-md border-b border-whizbang-lightgrey/60 shadow-xl w-full">
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
-        <div className="flex items-center justify-between h-20 gap-2">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20 gap-2 sm:gap-4">
           
-          {/* Elegant Brand Logo */}
+          {/* Elegant Compact Brand Logo */}
           <button 
             onClick={() => setActiveTab('home')}
             className="focus:outline-none focus-visible:ring-2 focus-visible:ring-whizbang-cyan rounded-xl p-1 flex-shrink-0"
@@ -43,13 +43,13 @@ export default function Header({ activeTab, setActiveTab, extraLargeFont, setExt
             <Logo />
           </button>
 
-          {/* Center Navigation Links */}
-          <nav className="hidden md:flex items-center gap-1" aria-label="Main Navigation">
+          {/* Center Navigation Links - Compact & Perfectly Aligned */}
+          <nav className="hidden lg:flex items-center gap-1" aria-label="Main Navigation">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={`px-3 py-1.5 rounded-xl text-sm sm:text-base font-extrabold transition-all duration-200 min-h-[38px] whitespace-nowrap ${
+                className={`px-3 py-1.5 rounded-xl text-sm font-extrabold transition-all duration-200 min-h-[38px] whitespace-nowrap ${
                   activeTab === item.id
                     ? 'bg-whizbang-orange text-white shadow-md shadow-whizbang-orange/30'
                     : 'text-gray-300 hover:text-white hover:bg-whizbang-slate'
@@ -61,8 +61,8 @@ export default function Header({ activeTab, setActiveTab, extraLargeFont, setExt
             ))}
           </nav>
 
-          {/* Right Action & Accessibility Controls */}
-          <div className="hidden md:flex items-center gap-1.5 flex-shrink-0">
+          {/* Right Action & Accessibility Controls (Guaranteed inside screen margin) */}
+          <div className="hidden md:flex items-center gap-1.5 flex-shrink-0 pr-2 sm:pr-0">
             
             {/* Senior Voice Read-Aloud Assist */}
             <button
@@ -94,10 +94,10 @@ export default function Header({ activeTab, setActiveTab, extraLargeFont, setExt
               <span>{extraLargeFont ? 'Print: XL' : 'Print: Normal'}</span>
             </button>
 
-            {/* AI Assistant Button */}
+            {/* AI Assistant Button - Positioned safely inside screen rectangle */}
             <button
               onClick={() => setIsChatOpen(true)}
-              className="flex items-center gap-1.5 bg-gradient-to-r from-whizbang-cyan to-teal-400 hover:from-cyan-300 hover:to-teal-300 text-whizbang-dark font-black px-3.5 py-1.5 rounded-xl shadow-md min-h-[38px] text-xs whitespace-nowrap transition-all transform hover:scale-[1.02] active:scale-[0.98] border border-whizbang-cyan ml-1"
+              className="flex items-center gap-1.5 bg-gradient-to-r from-whizbang-cyan to-teal-400 hover:from-cyan-300 hover:to-teal-300 text-whizbang-dark font-black px-3.5 py-1.5 rounded-xl shadow-md min-h-[38px] text-xs whitespace-nowrap transition-all transform hover:scale-[1.02] active:scale-[0.98] border border-whizbang-cyan"
               aria-label="Open Whizbang Gemini AI Assistant"
             >
               <Bot className="w-4 h-4 flex-shrink-0" />
