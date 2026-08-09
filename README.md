@@ -196,7 +196,7 @@ Good Whizbang Source/
 
 ## 📄 License & Copyright
 
-Created and maintained by **Ananthram Suresh** ([@ananthram-dotcom](https://github.com/ananthram-dotcom)).
+Created and maintained by **Ananth Ram S** ([@ananthram-dotcom](https://github.com/ananthram-dotcom)).
 
 This project is licensed under the [MIT License](LICENSE) — see the [LICENSE](file:///c:/Projects%20Source%20File/Good%20Whizbang%20Source/LICENSE) file for full legal details.
 
