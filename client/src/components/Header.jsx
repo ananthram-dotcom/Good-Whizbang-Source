@@ -1,124 +1,138 @@
 import React, { useState } from 'react';
-import { Bot, Type, Menu, X, Volume2 } from 'lucide-react';
+import { Link, NavLink } from 'react-router-dom';
+import { Bot, Type, Menu, X, Volume2, Sparkles, Sun, Contrast, SlidersHorizontal } from 'lucide-react';
 import Logo from './Logo';
+import { useAccessibility } from '../context/AccessibilityContext';
 
-export default function Header({ activeTab, setActiveTab, extraLargeFont, setExtraLargeFont, setIsChatOpen }) {
+export default function Header({ setIsChatOpen }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [speechActive, setSpeechActive] = useState(false);
+  const {
+    fontScale,
+    cycleFontScale,
+    useDyslexicFont,
+    setUseDyslexicFont,
+    contrastTheme,
+    cycleContrastTheme,
+    speechActive,
+    handleSpeakText
+  } = useAccessibility();
 
   const navItems = [
-    { id: 'home', label: 'Home' },
-    { id: 'products', label: 'Office Models' },
-    { id: 'about', label: 'About Us' },
-    { id: 'terms', label: 'Terms of Service' }
+    { path: '/', label: 'Home' },
+    { path: '/models', label: 'Office Models' },
+    { path: '/customizer', label: 'Pod Customizer' },
+    { path: '/calculator', label: 'Financing Calculator' },
+    { path: '/about', label: 'About Us' },
+    { path: '/terms', label: 'Terms' }
   ];
 
-  const handleSpeakOverview = () => {
-    if ('speechSynthesis' in window) {
-      if (speechActive) {
-        window.speechSynthesis.cancel();
-        setSpeechActive(false);
-      } else {
-        const text = "Welcome to Good Whizbang. We build accessible pre-construction smart offices for active seniors featuring voice climate control, zero threshold entries, and auto tinting glass.";
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.rate = 0.9;
-        utterance.onend = () => setSpeechActive(false);
-        window.speechSynthesis.speak(utterance);
-        setSpeechActive(true);
-      }
-    }
-  };
+  const speechOverviewText = "Welcome to Good Whizbang. We build accessible pre-construction smart offices for active seniors featuring voice climate control, zero threshold entries, and auto tinting glass.";
 
   return (
     <header className="sticky top-0 z-40 bg-whizbang-dark/95 backdrop-blur-md border-b border-whizbang-lightgrey/60 shadow-xl w-full">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20 gap-2 sm:gap-4">
           
-          {/* Elegant Compact Brand Logo */}
-          <button 
-            onClick={() => setActiveTab('home')}
+          {/* Brand Logo Link */}
+          <Link 
+            to="/" 
             className="focus:outline-none focus-visible:ring-2 focus-visible:ring-whizbang-cyan rounded-xl p-1 flex-shrink-0"
             aria-label="Good Whizbang Home Page"
           >
             <Logo />
-          </button>
+          </Link>
 
-          {/* Center Navigation Links - Compact & Perfectly Aligned */}
-          <nav className="hidden lg:flex items-center gap-1" aria-label="Main Navigation">
+          {/* Center Nav Links */}
+          <nav className="hidden xl:flex items-center gap-1" aria-label="Main Navigation">
             {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`px-3 py-1.5 rounded-xl text-sm font-extrabold transition-all duration-200 min-h-[38px] whitespace-nowrap ${
-                  activeTab === item.id
-                    ? 'bg-whizbang-orange text-white shadow-md shadow-whizbang-orange/30'
-                    : 'text-gray-300 hover:text-white hover:bg-whizbang-slate'
-                }`}
-                aria-current={activeTab === item.id ? 'page' : undefined}
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) =>
+                  `px-3 py-1.5 rounded-xl text-sm font-extrabold transition-all duration-200 min-h-[38px] whitespace-nowrap ${
+                    isActive
+                      ? 'bg-whizbang-orange text-white shadow-md shadow-whizbang-orange/30'
+                      : 'text-gray-300 hover:text-white hover:bg-whizbang-slate'
+                  }`
+                }
               >
                 {item.label}
-              </button>
+              </NavLink>
             ))}
           </nav>
 
-          {/* Right Action & Accessibility Controls (Guaranteed inside screen margin) */}
-          <div className="hidden md:flex items-center gap-1.5 flex-shrink-0 pr-2 sm:pr-0">
+          {/* Right Accessibility & Action Controls */}
+          <div className="hidden lg:flex items-center gap-1.5 flex-shrink-0">
             
-            {/* Senior Voice Read-Aloud Assist */}
+            {/* Audio Assist */}
             <button
-              onClick={handleSpeakOverview}
-              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl border text-xs font-extrabold min-h-[38px] whitespace-nowrap transition-all ${
+              onClick={() => handleSpeakText(speechOverviewText)}
+              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl border text-xs font-extrabold min-h-[38px] transition-all ${
                 speechActive
                   ? 'bg-teal-500/20 border-teal-400 text-teal-300 animate-pulse'
                   : 'bg-whizbang-slate border-whizbang-lightgrey text-gray-300 hover:text-white'
               }`}
               title="Listen to Senior Audio Overview"
-              aria-label="Listen to Senior Audio Overview"
             >
               <Volume2 className="w-3.5 h-3.5 text-teal-400" />
               <span>{speechActive ? 'Stop' : 'Listen'}</span>
             </button>
 
-            {/* Senior Print Size Toggle */}
+            {/* Font Scale Toggle */}
             <button
-              onClick={() => setExtraLargeFont(!extraLargeFont)}
-              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl border text-xs font-extrabold min-h-[38px] whitespace-nowrap transition-colors ${
-                extraLargeFont
-                  ? 'bg-whizbang-cyan/20 border-whizbang-cyan text-whizbang-cyan'
-                  : 'bg-whizbang-slate border-whizbang-lightgrey text-gray-300 hover:text-white'
-              }`}
-              title="Toggle Large Senior Print Mode"
-              aria-label="Toggle Senior Extra Large Font Size Mode"
+              onClick={cycleFontScale}
+              className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-whizbang-lightgrey bg-whizbang-slate text-whizbang-cyan text-xs font-extrabold min-h-[38px] hover:text-white"
+              title="Change Senior Print Font Size"
             >
               <Type className="w-3.5 h-3.5" />
-              <span>{extraLargeFont ? 'Print: XL' : 'Print: Normal'}</span>
+              <span>Print: {fontScale.toUpperCase()}</span>
             </button>
 
-            {/* AI Assistant Button - Positioned safely inside screen rectangle */}
+            {/* Dyslexic Font Toggle */}
+            <button
+              onClick={() => setUseDyslexicFont(!useDyslexicFont)}
+              className={`px-2.5 py-1.5 rounded-xl border text-xs font-extrabold min-h-[38px] transition-colors ${
+                useDyslexicFont
+                  ? 'bg-whizbang-orange/20 border-whizbang-orange text-whizbang-orange'
+                  : 'bg-whizbang-slate border-whizbang-lightgrey text-gray-300 hover:text-white'
+              }`}
+              title="Toggle Dyslexic-Friendly Font Mode"
+            >
+              Dyslexic Font
+            </button>
+
+            {/* Contrast Mode Toggle */}
+            <button
+              onClick={cycleContrastTheme}
+              className="p-2 rounded-xl border border-whizbang-lightgrey bg-whizbang-slate text-amber-400 min-h-[38px] min-w-[38px] flex items-center justify-center hover:bg-whizbang-lightgrey"
+              title="Toggle Contrast Mode"
+            >
+              <Contrast className="w-4 h-4" />
+            </button>
+
+            {/* AI Assistant Button */}
             <button
               onClick={() => setIsChatOpen(true)}
-              className="flex items-center gap-1.5 bg-gradient-to-r from-whizbang-cyan to-teal-400 hover:from-cyan-300 hover:to-teal-300 text-whizbang-dark font-black px-3.5 py-1.5 rounded-xl shadow-md min-h-[38px] text-xs whitespace-nowrap transition-all transform hover:scale-[1.02] active:scale-[0.98] border border-whizbang-cyan"
-              aria-label="Open Whizbang Gemini AI Assistant"
+              className="flex items-center gap-1.5 bg-gradient-to-r from-whizbang-cyan to-teal-400 hover:from-cyan-300 hover:to-teal-300 text-whizbang-dark font-black px-3.5 py-1.5 rounded-xl shadow-md min-h-[38px] text-xs whitespace-nowrap transition-all border border-whizbang-cyan"
             >
               <Bot className="w-4 h-4 flex-shrink-0" />
               <span>AI Assistant</span>
             </button>
+
           </div>
 
-          {/* Mobile Hamburger Toggle */}
-          <div className="flex md:hidden items-center gap-1.5">
+          {/* Mobile Menu Button */}
+          <div className="flex xl:hidden items-center gap-1.5">
             <button
               onClick={() => setIsChatOpen(true)}
               className="px-3 py-1.5 bg-whizbang-cyan text-whizbang-dark rounded-xl font-black text-xs min-h-[38px] flex items-center gap-1"
-              aria-label="Open AI Chatbot"
             >
               <Bot className="w-4 h-4" />
-              <span>AI Assistant</span>
+              <span>AI</span>
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-1.5 bg-whizbang-slate text-white rounded-xl border border-whizbang-lightgrey min-h-[38px] min-w-[38px] flex items-center justify-center"
-              aria-label="Toggle Navigation Menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -129,43 +143,26 @@ export default function Header({ activeTab, setActiveTab, extraLargeFont, setExt
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-whizbang-slate border-b border-whizbang-lightgrey px-4 pt-3 pb-6 space-y-3">
+        <div className="xl:hidden bg-whizbang-slate border-b border-whizbang-lightgrey px-4 pt-3 pb-6 space-y-3">
           {navItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => {
-                setActiveTab(item.id);
-                setMobileMenuOpen(false);
-              }}
-              className={`w-full text-left px-4 py-3 rounded-xl text-xl font-bold min-h-[48px] flex items-center ${
-                activeTab === item.id
-                  ? 'bg-whizbang-orange text-white'
-                  : 'text-gray-200 hover:bg-whizbang-dark'
-              }`}
+            <Link
+              key={item.path}
+              to={item.path}
+              onClick={() => setMobileMenuOpen(false)}
+              className="block w-full text-left px-4 py-3 rounded-xl text-xl font-bold min-h-[48px] text-gray-200 hover:bg-whizbang-dark"
             >
               {item.label}
-            </button>
+            </Link>
           ))}
           <div className="pt-2 border-t border-whizbang-lightgrey/50 space-y-2">
             <button
               onClick={() => {
-                handleSpeakOverview();
+                cycleFontScale();
                 setMobileMenuOpen(false);
               }}
-              className="w-full text-left px-4 py-3 rounded-lg text-lg font-bold bg-whizbang-dark text-teal-300 min-h-[48px] flex items-center gap-2"
+              className="w-full text-left px-4 py-3 rounded-lg text-lg font-bold bg-whizbang-dark text-whizbang-cyan flex items-center gap-2"
             >
-              <Volume2 className="w-5 h-5" />
-              <span>Senior Voice Read-Aloud Assist</span>
-            </button>
-            <button
-              onClick={() => {
-                setExtraLargeFont(!extraLargeFont);
-                setMobileMenuOpen(false);
-              }}
-              className="w-full text-left px-4 py-3 rounded-lg text-lg font-bold bg-whizbang-dark text-whizbang-cyan min-h-[48px] flex items-center gap-2"
-            >
-              <Type className="w-5 h-5" />
-              <span>Senior Print Size: {extraLargeFont ? 'Extra Large' : 'Standard'}</span>
+              <Type className="w-5 h-5" /> Print Size: {fontScale.toUpperCase()}
             </button>
           </div>
         </div>

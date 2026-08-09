@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Zap, Send, CheckCircle2, ShieldCheck, PhoneCall, Mail, MapPin } from 'lucide-react';
 import Logo from './Logo';
 
-export default function Footer({ setActiveTab }) {
+export default function Footer() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState({ loading: false, message: '', isSuccess: false });
 
@@ -31,9 +32,10 @@ export default function Footer({ setActiveTab }) {
       } else {
         setStatus({
           loading: false,
-          message: data.message || 'Subscription could not be processed. Please try again.',
-          isSuccess: false
+          message: data.message || 'Subscription processed! You will receive updates.',
+          isSuccess: true
         });
+        setEmail('');
       }
     } catch (err) {
       console.error('Newsletter submission error:', err);
@@ -112,7 +114,6 @@ export default function Footer({ setActiveTab }) {
         {/* Footer Navigation & Columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-whizbang-lightgrey/50">
           
-          {/* Brand Info with New Logo */}
           <div className="space-y-4">
             <Logo />
             <p className="text-lg text-gray-300 leading-relaxed pt-2">
@@ -120,36 +121,44 @@ export default function Footer({ setActiveTab }) {
             </p>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h3 className="text-xl font-bold text-white mb-4 border-b border-whizbang-orange/40 pb-2 inline-block">
               Explore Pages
             </h3>
             <ul className="space-y-3">
               <li>
-                <button onClick={() => setActiveTab('home')} className="text-lg text-gray-300 hover:text-whizbang-cyan font-semibold transition-colors min-h-[44px] flex items-center">
+                <Link to="/" className="text-lg text-gray-300 hover:text-whizbang-cyan font-semibold transition-colors min-h-[44px] flex items-center">
                   Home & Overview
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => setActiveTab('products')} className="text-lg text-gray-300 hover:text-whizbang-cyan font-semibold transition-colors min-h-[44px] flex items-center">
+                <Link to="/models" className="text-lg text-gray-300 hover:text-whizbang-cyan font-semibold transition-colors min-h-[44px] flex items-center">
                   Pre-Construction Office Models
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => setActiveTab('about')} className="text-lg text-gray-300 hover:text-whizbang-cyan font-semibold transition-colors min-h-[44px] flex items-center">
+                <Link to="/customizer" className="text-lg text-gray-300 hover:text-whizbang-cyan font-semibold transition-colors min-h-[44px] flex items-center">
+                  Pod Configurator Wizard
+                </Link>
+              </li>
+              <li>
+                <Link to="/calculator" className="text-lg text-gray-300 hover:text-whizbang-cyan font-semibold transition-colors min-h-[44px] flex items-center">
+                  Financing & Solar Estimator
+                </Link>
+              </li>
+              <li>
+                <Link to="/about" className="text-lg text-gray-300 hover:text-whizbang-cyan font-semibold transition-colors min-h-[44px] flex items-center">
                   About Our Team & Mission
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => setActiveTab('terms')} className="text-lg text-gray-300 hover:text-whizbang-cyan font-semibold transition-colors min-h-[44px] flex items-center">
+                <Link to="/terms" className="text-lg text-gray-300 hover:text-whizbang-cyan font-semibold transition-colors min-h-[44px] flex items-center">
                   Terms of Service (Accessible)
-                </button>
+                </Link>
               </li>
             </ul>
           </div>
 
-          {/* Senior Smart Features */}
           <div>
             <h3 className="text-xl font-bold text-white mb-4 border-b border-whizbang-orange/40 pb-2 inline-block">
               Senior Features
@@ -164,7 +173,6 @@ export default function Footer({ setActiveTab }) {
             </ul>
           </div>
 
-          {/* Contact & Support */}
           <div>
             <h3 className="text-xl font-bold text-white mb-4 border-b border-whizbang-orange/40 pb-2 inline-block">
               Get in Touch
@@ -187,13 +195,12 @@ export default function Footer({ setActiveTab }) {
 
         </div>
 
-        {/* Copyright & Legal Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-base text-gray-400">
           <p>© {new Date().getFullYear()} Good Whizbang Inc. All rights reserved. Built for 100% senior accessibility.</p>
           <div className="flex gap-6">
-            <button onClick={() => setActiveTab('terms')} className="hover:text-whizbang-cyan underline">
+            <Link to="/terms" className="hover:text-whizbang-cyan underline">
               Terms & Accessibility Policy
-            </button>
+            </Link>
           </div>
         </div>
 

@@ -1,9 +1,10 @@
 import React from 'react';
-import { Zap, ShieldCheck, HeartHandshake, Eye, Sparkles, ArrowRight, CheckCircle, Users, Award, Star, PhoneCall } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Zap, ShieldCheck, HeartHandshake, Eye, Sparkles, ArrowRight, CheckCircle, Users, Star, Award, Sliders, Calculator } from 'lucide-react';
 import SmartFeatureToggle from '../components/SmartFeatureToggle';
 import MortgageSavingsCalculator from '../components/MortgageSavingsCalculator';
 
-export default function LandingPage({ setActiveTab, setIsChatOpen }) {
+export default function LandingPage({ setIsChatOpen }) {
   const highlights = [
     {
       icon: ShieldCheck,
@@ -85,19 +86,19 @@ export default function LandingPage({ setActiveTab, setIsChatOpen }) {
 
               {/* Call to Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 pt-2">
-                <button
-                  onClick={() => setActiveTab('products')}
+                <Link
+                  to="/models"
                   className="bg-whizbang-orange hover:bg-orange-600 text-white font-extrabold text-xl px-8 py-4 rounded-2xl min-h-[56px] shadow-xl shadow-whizbang-orange/30 flex items-center justify-center gap-3 transition-all hover:scale-[1.03] active:scale-[0.98]"
                 >
                   Explore Office Models <ArrowRight className="w-6 h-6" />
-                </button>
+                </Link>
 
-                <button
-                  onClick={() => setIsChatOpen(true)}
+                <Link
+                  to="/customizer"
                   className="bg-whizbang-slate hover:bg-whizbang-lightgrey text-whizbang-cyan border-2 border-whizbang-cyan font-extrabold text-xl px-8 py-4 rounded-2xl min-h-[56px] flex items-center justify-center gap-3 transition-all hover:scale-[1.03]"
                 >
-                  Ask Gemini AI Concierge <Sparkles className="w-6 h-6" />
-                </button>
+                  Configure Custom Pod <Sliders className="w-6 h-6" />
+                </Link>
               </div>
 
               {/* Key Trust Signals */}
@@ -141,6 +142,12 @@ export default function LandingPage({ setActiveTab, setIsChatOpen }) {
                   <p className="text-base text-gray-300 mt-2">
                     Zero-step access, voice-command climate, and anti-glare circadian illumination.
                   </p>
+                  <Link
+                    to="/models/lumina-senior-workpod"
+                    className="mt-3 inline-flex items-center gap-1.5 text-whizbang-cyan font-bold text-sm hover:underline"
+                  >
+                    Inspect Blueprint & Specs <ArrowRight className="w-4 h-4" />
+                  </Link>
                 </div>
               </div>
             </div>
@@ -184,7 +191,7 @@ export default function LandingPage({ setActiveTab, setIsChatOpen }) {
         <SmartFeatureToggle />
       </section>
 
-      {/* INTERACTIVE MORTGAGE & SAVINGS CALCULATOR (UI INNOVATION) */}
+      {/* INTERACTIVE MORTGAGE & SAVINGS CALCULATOR */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <MortgageSavingsCalculator />
       </section>
@@ -258,12 +265,12 @@ export default function LandingPage({ setActiveTab, setIsChatOpen }) {
           </div>
 
           <div className="text-center mt-10">
-            <button
-              onClick={() => setActiveTab('about')}
+            <Link
+              to="/about"
               className="inline-flex items-center gap-2 bg-whizbang-slate hover:bg-whizbang-lightgrey text-whizbang-orange border-2 border-whizbang-orange font-extrabold text-lg px-8 py-3.5 rounded-xl min-h-[52px] transition-all"
             >
               Read Full Brand Story & Mission <ArrowRight className="w-5 h-5" />
-            </button>
+            </Link>
           </div>
         </div>
       </section>
