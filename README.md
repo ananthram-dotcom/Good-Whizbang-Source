@@ -196,4 +196,7 @@ Good Whizbang Source/
 
 ## 📄 License & Copyright
 
-© 2026 **Good Whizbang Inc.** All rights reserved. Built for 100% senior accessibility and workplace independence.
+Created and maintained by **Ananthram Suresh** ([@ananthram-dotcom](https://github.com/ananthram-dotcom)).
+
+This project is licensed under the [MIT License](LICENSE) — see the [LICENSE](file:///c:/Projects%20Source%20File/Good%20Whizbang%20Source/LICENSE) file for full legal details.
+
